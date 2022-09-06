@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProjektHund
 {
-    internal class Database
+    public class Database
     {
 
     }
