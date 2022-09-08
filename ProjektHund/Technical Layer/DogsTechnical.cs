@@ -17,7 +17,7 @@ namespace ProjektHund.Technical_Layer
             // Create the connection to the resource!
             // This is the connection, that is established and
             // will be available throughout this block.
-            using (SqlConnection conn = new SqlConnection())
+           /* using (SqlConnection conn = new SqlConnection())
             {
                 // Create the connectionString
                 // Trusted_Connection is used to denote the connection uses Windows Authentication
@@ -44,7 +44,7 @@ namespace ProjektHund.Technical_Layer
                 conn.Close();
             }
         }
-
+           */
         public void getInformations()
         {
             DogsUI dogsUI = new DogsUI();
