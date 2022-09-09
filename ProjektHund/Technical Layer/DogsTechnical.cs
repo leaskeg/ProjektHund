@@ -17,7 +17,7 @@ namespace ProjektHund.Technical_Layer
             // Create the connection to the resource!
             // This is the connection, that is established and
             // will be available throughout this block.
-           /* using (SqlConnection conn = new SqlConnection())
+            using (SqlConnection conn = new SqlConnection())
             {
                 // Create the connectionString
                 // Trusted_Connection is used to denote the connection uses Windows Authentication
@@ -44,11 +44,86 @@ namespace ProjektHund.Technical_Layer
                 conn.Close();
             }
         }
-           */
+
         public void getInformations()
         {
-            DogsUI dogsUI = new DogsUI();
-            dogsUI.Informations();
+
+            // Create the connection to the resource!
+            // This is the connection, that is established and
+            // will be available throughout this block.
+            using (SqlConnection conn = new SqlConnection())
+            {
+                // Create the connectionString
+                // Trusted_Connection is used to denote the connection uses Windows Authentication
+                string ConnectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=Hunde;Integrated Security=True";
+
+                //Promting the user to enter first range number
+                Console.WriteLine("Enter the dogs name: ");
+                string userInputDogName = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs pedigree number: ");
+                string userInputDogPedigree = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs birthdate: \n(Example: 26-09-2022)");
+                string userInputDogBirthdate = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs gender: ");
+                string userInputDogGender = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs breeder: ");
+                string userInputDogBreeder = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs chip number: \n(If chip number does not exsist, type: 0) ");
+                string userInputDogChipNumber = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the fathers pedigree number: ");
+                string userInputFathersPedigreeNumber = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs mothers pedigree number: ");
+                string userInputMothersPedigreeNumber = Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Enter the dogs color\nType the color as one one of the followering: \n(Rg,Tg,Rg/Hv,Tg/hv)\n (if unwanted color simply press Enter: )");
+                string userInputDogColor = Console.ReadLine();
+                Console.Clear();
+
+                bool repeat = true;
+                while (repeat)
+                {
+                    Console.WriteLine($"This was the information you entered\n\nName: {userInputDogName}\nPedigree Number: {userInputDogPedigree}\nBirthDate: {userInputDogBirthdate} \nGender: {userInputDogGender}\nBreeder: {userInputDogBreeder}\nChip Number: {userInputDogChipNumber}\nFathers Pedigree Number: {userInputFathersPedigreeNumber}\nMothers Pedigree Number: {userInputMothersPedigreeNumber}\nColor: {userInputDogColor}");
+                    Console.WriteLine("Do you want to save this dog in the database?\n\nPress 'Enter' to save or Press 'Backspace' to return to menu");
+                    var Choice = Console.ReadKey().Key;
+
+                    switch (Choice)
+                    {
+                        case ConsoleKey.Enter:
+                            DogsUI dogsUI = new DogsUI();
+
+                            dogsUI.ShowConfirmation();
+
+                            string commandText = $"INSERT INTO [dbo].[Grunddata$] (navn, Stambog, born, sex, breeder, Tato, far, mor, farve ) VALUES ('{userInputDogName}', '{userInputDogPedigree}','{userInputDogBirthdate}','{userInputDogGender}','{userInputDogBreeder}','{userInputDogChipNumber}','{userInputFathersPedigreeNumber}','{userInputMothersPedigreeNumber}','{userInputDogColor}');";
+                            using (SqlConnection con = new SqlConnection(ConnectionString))
+                            {
+                                con.Open();
+
+                                using (SqlCommand cmd = new SqlCommand(commandText, con))
+                                    cmd.ExecuteNonQuery();
+                                conn.Close();
+                                repeat = false;
+                            }
+                            break;
+                        case ConsoleKey.Backspace:
+                            Console.WriteLine("You will now be returned to menu\nPress any key to continue...");
+                            Console.ReadKey();
+                            repeat = false;
+                            break;
+                        default:
+                            Console.WriteLine("Wrong Input. Press any key to continue...");
+                            Console.ReadKey();
+                            Console.Clear();
+                            break;
+                    }
+                }
+            }
         }
     }
 }
