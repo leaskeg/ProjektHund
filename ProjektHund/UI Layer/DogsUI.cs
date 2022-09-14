@@ -13,16 +13,14 @@ namespace ProjektHund.UI_Layer
 
 		static void Main(string[] args)
 		{
-			DogsUI dogsUI = new DogsUI();
-			dogsUI.ShowMenu();
-		}
+			DogsDomain dogsDomain = new DogsDomain();
+			dogsDomain.setChoice();
+        }
 
 		public void ShowMenu()
 		{
 			//Creating Console.WriteLine to communicate with our user and give them menu options
-			Console.WriteLine("Welcome to Boxer-Klubben \n\nChoose an option\n1. Search for HD-Index\n2. Create A Dog");
-			DogsDomain dogsDomain = new DogsDomain();
-			dogsDomain.setChoice();
+			Console.WriteLine("Welcome to Boxer-Klubben \n\nChoose an option\n1. Search for HD-Index\n2. Create A Dog\n3. Exit");
 		}
 
 		public void ShowDogList()

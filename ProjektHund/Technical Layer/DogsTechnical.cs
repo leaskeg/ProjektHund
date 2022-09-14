@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ProjektHund.Technical_Layer
@@ -28,6 +29,7 @@ namespace ProjektHund.Technical_Layer
                 int userInput = Convert.ToInt32(Console.ReadLine());
                 Console.WriteLine("Enter second range number");
                 int userInput1 = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
                 conn.Open();
 
                 using (SqlCommand cmd = new SqlCommand($"SELECT * FROM [dbo].[Grunddata$] WHERE HDindex BETWEEN {userInput} AND {userInput1}", conn))
@@ -39,15 +41,15 @@ namespace ProjektHund.Technical_Layer
                             Console.WriteLine("Stambognr: [{0}], Name: [{1}], HDindex: [{2}]\n", reader.GetValue(1), reader.GetValue(3), reader.GetValue(17));
                         }
                     }
-                }   
-                Console.ReadLine();
+                }
+                Console.WriteLine("\nPress any key to continue...");
+                Console.ReadKey();
                 conn.Close();
             }
         }
 
         public void getInformations()
         {
-
             // Create the connection to the resource!
             // This is the connection, that is established and
             // will be available throughout this block.
@@ -60,12 +62,32 @@ namespace ProjektHund.Technical_Layer
                 //Promting the user to enter first range number
                 Console.WriteLine("Enter the dogs name: ");
                 string userInputDogName = Console.ReadLine();
+                bool check = true;
+                while (check)
+                {
+                    if (Regex.IsMatch(userInputDogName, @"^[\p{L}\p{N}]+$"))
+                    {
+                        Console.WriteLine("Valid password.");
+                        Console.ReadLine();
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: A name cannot contain special characters!\nYou will now be returned to the main menu");
+                        Console.ReadLine();
+                        return;
+                    }
+                }
+
+                
+
+
                 Console.Clear();
                 Console.WriteLine("Enter the dogs pedigree number: ");
                 string userInputDogPedigree = Console.ReadLine();
                 Console.Clear();
                 Console.WriteLine("Enter the dogs birthdate: \n(Example: 26-09-2022)");
-                string userInputDogBirthdate = Console.ReadLine();
+                string userInputDogBirthdate = Console.ReadLine(); //Should be DateTime, but crashes with SQL database, find a fix for next sprint
                 Console.Clear();
                 Console.WriteLine("Enter the dogs gender: ");
                 string userInputDogGender = Console.ReadLine();
@@ -100,7 +122,7 @@ namespace ProjektHund.Technical_Layer
 
                             dogsUI.ShowConfirmation();
 
-                            string commandText = $"INSERT INTO [dbo].[Grunddata$] (navn, Stambog, born, sex, breeder, Tato, far, mor, farve ) VALUES ('{userInputDogName}', '{userInputDogPedigree}','{userInputDogBirthdate}','{userInputDogGender}','{userInputDogBreeder}','{userInputDogChipNumber}','{userInputFathersPedigreeNumber}','{userInputMothersPedigreeNumber}','{userInputDogColor}');";
+                            string commandText = $"INSERT INTO [dbo].[Grunddata$] (navn, Stambog, born, sex, breeder, Tato, far, mor, farve,  ) VALUES ('{userInputDogName}', '{userInputDogPedigree}','{userInputDogBirthdate}','{userInputDogGender}','{userInputDogBreeder}','{userInputDogChipNumber}','{userInputFathersPedigreeNumber}','{userInputMothersPedigreeNumber}','{userInputDogColor}');";
                             using (SqlConnection con = new SqlConnection(ConnectionString))
                             {
                                 con.Open();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using ProjektHund.Technical_Layer;
+using ProjektHund.UI_Layer;
 
 namespace ProjektHund.Domain_Layer
 {
@@ -15,54 +16,39 @@ namespace ProjektHund.Domain_Layer
         {
             DogsTechnical dogsTechnical = new DogsTechnical();
             
-            //string choice to get userInput into our switch case
-            string choice = Console.ReadLine();
-            //Clear to make it look PRETTY and SPARKLY
-            Console.Clear();
             //switch case to control our users choices in the Menu
             //Our choice parameter is our userInput string
-            switch (choice)
+            bool KeepAlive = true;
+
+            while (KeepAlive == true)
             {
-                case "1":
-                    //instanciates getRange from its class, so we can see what the user enters as range
-                    dogsTechnical.getRange();
-                    break;
+                DogsUI dogsUI = new DogsUI();
+                dogsUI.ShowMenu();
 
-                case "2":
-                    dogsTechnical.getInformations();
-                    break;
+                //string choice to get userInput into our switch case
+                string choice = Console.ReadLine();
+                //Clear to make it look PRETTY and SPARKLY
+                Console.Clear();
+                switch (choice)
+                {
+                    case "1":
+                        //instanciates getRange from its class, so we can see what the user enters as range
+                        dogsTechnical.getRange();
+                        break;
 
-                case "3":
-
-                    break;
-
-                case "4":
-
-                    break;
-
-                default:
-
-                    break;
+                    case "2":
+                        dogsTechnical.getInformations();
+                        break;
+                    case "3":
+                        System.Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid choice. Try again");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+                }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
